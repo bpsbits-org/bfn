@@ -47,7 +47,7 @@ curl -s https://api.github.com/repos/bpsbits-org/bfn/releases/latest \
 | xargs curl -L -o install-pg16.sh
 
 if [[ -f "install-pg16.sh" && -f "bfn-distro-pg16.tar.gz" ]]; then
-    bash ./install-pg16.sh
+    source ./install-pg16.sh
     rm -f bfn-distro-pg16.tar.gz
     rm -f install-pg16.sh
     rm -f "${BFN_DEP_FILE}"
