@@ -15,7 +15,7 @@
 # Usage example (podman):
 # curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh -o deploy-pg16.sh
 # podman cp deploy-pg16.sh pg-16-test:/
-# podman exec pg-16-test bash -c "/deploy-pg16.sh"
+# podman exec --user root -it pg-16-test bash deploy-pg16.sh
 #
 # -------------------------------------------------------------------
 readonly BFN_DEP_FILE="${BASH_SOURCE[0]}"
