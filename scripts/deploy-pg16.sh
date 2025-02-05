@@ -2,20 +2,31 @@
 # -------------------------------------------------------------------
 # Installs BFN into PostgreSQL environment
 #
-# Usage example (terminal, preloaded file):
+# Usage example (terminal):
+# curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh -o deploy-pg16.sh
 # bash ./deploy-pg16.sh
 #
-# Usage example (terminal, from GitHub):
+# Usage example (terminal):
 # curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash
 #
-# Usage example (podman, form GitHub)
-# podman exec pg-16-test curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash
+# Usage example (podman, from GitHub)
+# podman exec --user root -it pg-16-test bash -c "curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash"
+#
+# Usage example (podman):
+# curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh -o deploy-pg16.sh
+# podman cp deploy-pg16.sh pg-16-test:/
+# podman exec pg-16-test bash -c "/deploy-pg16.sh"
 #
 # -------------------------------------------------------------------
 readonly BFN_DEP_FILE="${BASH_SOURCE[0]}"
 
-if [[ ! -d "/usr/share/postgresql/16" ]]; then
+if [[ ! -d "/usr/lib/postgresql/16" ]]; then
 	echo -e "PostgreSQL 16 directory does not exist"
+	exit 1
+fi
+
+if [[ ! -d "/usr/share/postgresql/16" ]]; then
+	echo -e "PostgreSQL 16 shared directory does not exist"
 	exit 1
 fi
 
