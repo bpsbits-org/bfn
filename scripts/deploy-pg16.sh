@@ -9,7 +9,7 @@
 # curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash
 #
 # Usage example (podman, form GitHub)
-# podman run -d curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash
+# podman exec pg-16-test curl -sL https://raw.githubusercontent.com/bpsbits-org/bfn/main/scripts/deploy-pg16.sh | bash
 #
 # -------------------------------------------------------------------
 readonly BFN_DEP_FILE="${BASH_SOURCE[0]}"
