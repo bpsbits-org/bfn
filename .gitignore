@@ -1,5 +1,8 @@
+/.idea/*
+!/.idea/runConfigurations
+!/.idea/runConfigurations/*
+
 .DS_Store
-.idea/
 /target
 *.iml
 **/*.rs.bk
