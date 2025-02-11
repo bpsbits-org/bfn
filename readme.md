@@ -75,3 +75,9 @@ In the provided example:
 cp /usr/share/postgresql/16/extension/bfn--2.0.1.sql /usr/share/postgresql/16/extension/bfn--2.0.0--2.0.1.sql
 ```
 
+Update extension:
+
+```sql
+alter extension bfn update;
+```
+
