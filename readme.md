@@ -2,6 +2,14 @@
 
 Collection of instruments for particular PostgreSQL servers.
 
+## Development
+
+Composed in [Rust](https://www.rust-lang.org) and utilises the [pgrx](https://github.com/pgcentralfoundation/pgrx) framework.
+
+Ensure that `Rust` and `pgrx` are installed on your systems, as they are essential for development. Instructions for utilising `Rust` and `pgrx` can be found on the aforementioned websites.
+
+The build utilises a containerised version of `PostgreSQL`.
+
 ## Documentation
 
 Please see [documentation](https://bpsbits.org/bfn/doc/bfn) for more details.
