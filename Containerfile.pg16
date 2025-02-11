@@ -1,0 +1,65 @@
+# ------------------------------------------------------------
+# Builds pgrx based postgres extension
+# Containerfile.pg16
+# ------------------------------------------------------------
+# podman build --arch amd64 -t build-pgrx:snapshot .
+# Please note that some outputs are silenced to reduce the noise.
+# If you encounter problems, disable silnecers to see an output.
+#
+FROM --platform=linux/amd64 docker.io/library/postgres:16 AS postgres_pgrx_build
+
+ENV POSTGRES_PASSWORD='********'
+ENV DEBIAN_FRONTEND=noninteractive
+RUN export DEBIAN_FRONTEND=noninteractive
+
+# Add required components
+RUN apt-get -qq update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq -y \
+    bison  \
+    build-essential  \
+    ccache  \
+    curl  \
+    flex  \
+    git  \
+    libclang-dev  \
+    libreadline-dev  \
+    libssl-dev  \
+    libxml2-dev  \
+    libxml2-utils  \
+    libxslt-dev  \
+    pkg-config  \
+    postgresql-server-dev-16 \
+    xsltproc  \
+    zip \
+    zlib1g-dev < /dev/null > /dev/null
+RUN apt-get clean
+
+# Install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y  2>/dev/null >/dev/null
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN chmod +x /root/.cargo/env && /root/.cargo/env
+RUN cargo --version
+
+# Install pgrx
+RUN cargo install --locked cargo-pgrx 2>/dev/null >/dev/null
+RUN cargo pgrx init --pg16 /usr/lib/postgresql/16/bin/pg_config
+RUN cargo pgrx --version
+
+# Prepare data for build
+RUN mkdir -p /root/pgrx-build
+RUN rm -rf /root/pgrx-build/*
+RUN mkdir -p /root/pgrx-build/distro; mkdir -p /root/pgrx-build/packed; mkdir -p /root/pgrx-build/target/release
+WORKDIR /root/pgrx-build
+COPY . .
+
+RUN sed -i "s/\[target.'cfg(target_os=\"macos\")'\]/[target.'cfg(target_os=\"linux\")']/g" /root/pgrx-build/.cargo/config.toml
+
+# Build
+RUN cargo pgrx package
+# RUN ls -l /root/pgrx-build/distro
+
+# Compress build
+RUN find /root/pgrx-build/target/release -type d -name '*-pg16' | head -n 1 > /root/pgrx-build/distro-dir.txt
+RUN export SRC_DIR=$(cat /root/pgrx-build/distro-dir.txt) && echo "$SRC_DIR" && cp -r "$SRC_DIR"/* /root/pgrx-build/distro
+RUN cd /root/pgrx-build/distro && tar -czf /root/pgrx-build/packed/bfn-distro-pg16.tar.gz .
+RUN ls -l /root/pgrx-build/packed

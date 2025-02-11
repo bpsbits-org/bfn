@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Installs distro in PostgreSQl environment
+# This script is not suitable for any configurations.
 readonly BFN_INSTALL_FILE="${BASH_SOURCE[0]}"
 BFN_DISTRO_DIR="$(dirname "${BFN_INSTALL_FILE}")"
 BFN_DISTRO_PKG="bfn-distro-pg16.tar.gz"
@@ -10,7 +11,6 @@ if [ -f "${BFN_DISTRO_PKG}" ]; then
 	## Check that psql exists
 	if [[ -d "/usr/lib/postgresql/16" ]]; then
 		echo "Deploying BFN from '${BFN_DISTRO_PKG}'...";
-		find /usr/share/postgresql/16/extension -type f -name "bfn-*.sql" -exec rm {} \;
 		mkdir -p tmp
 		# Unpack
 		tar -xzf "${BFN_DISTRO_PKG}" -C /
