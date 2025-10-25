@@ -1,0 +1,61 @@
+# Creates PostgreSQL 16 environment for pgrx builder
+FROM --platform=linux/amd64 docker.io/library/postgres:16 AS builder_pgrx_16
+
+ENV POSTGRES_PASSWORD='********'
+ENV DEBIAN_FRONTEND=noninteractive
+RUN export DEBIAN_FRONTEND=noninteractive
+
+# Add required components
+RUN apt-get -qq update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq -y \
+    autoconf \
+    automake \
+    binutils \
+    bison  \
+    build-essential  \
+    ccache  \
+    curl  \
+    debhelper tree \
+    dpkg-dev \
+    flex  \
+    gcc \
+    git  \
+    libc6-dev \
+    libclang-dev  \
+    libfuse-dev \
+    libreadline-dev  \
+    libssl-dev  \
+    libtool \
+    libxml2-dev  \
+    libxml2-utils  \
+    libxslt-dev  \
+    make \
+    perl \
+    pkg-config  \
+    pkg-config \
+    postgresql-server-dev-16 \
+    squashfs-tools \
+    tree \
+    xsltproc  \
+    zip \
+    zlib1g-dev < /dev/null > /dev/null
+RUN apt-get clean
+
+
+RUN cd / && git clone https://github.com/liberize/ssc.git
+
+# Install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y  2>/dev/null >/dev/null
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN chmod +x /root/.cargo/env && /root/.cargo/env
+RUN cargo --version
+
+# Install pgrx
+RUN cargo install --locked cargo-pgrx@0.16.0
+RUN cargo pgrx --version
+RUN cargo pgrx init --pg16 /usr/lib/postgresql/16/bin/pg_config
+
+# Location for project
+RUN mkdir -p /root/pgrx-project
+
+VOLUME /root/pgrx-project
