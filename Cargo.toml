@@ -14,24 +14,26 @@ name = "pgrx_embed_bfn"
 path = "./src/bin/pgrx_embed.rs"
 
 [features]
-default = ["pg16"]
+default = ["pg18"]
+pg18 = ["pgrx/pg18", "pgrx-tests/pg18"]
+pg17 = ["pgrx/pg17", "pgrx-tests/pg17"]
 pg16 = ["pgrx/pg16", "pgrx-tests/pg16"]
 pg_test = []
 
 [dependencies]
-pgrx = "=0.12.9"
+pgrx = "0.16.1"
 base64 = "0.22.1"
-md5 = "0.7.0"
-regex = "1.11.1"
-uuid = { version = "1.12.1", features = ["v7", "v4"] }
+md5 = "0.8.0"
+regex = "1.12.2"
+uuid = { version = "1.18.1", features = ["v7", "v4"] }
 rand = "0.9.0"
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.138"
-toml = "0.8.14"
-chrono = "0.4.39"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+toml = "0.9.8"
+chrono = "0.4.42"
 
 [dev-dependencies]
-pgrx-tests = "=0.12.9"
+pgrx-tests = "0.16.1"
 
 [profile.dev]
 panic = "unwind"

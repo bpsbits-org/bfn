@@ -17,6 +17,18 @@ use serde_json::json;
 
 pg_module_magic!();
 
+pgrx::extension_sql!(
+    r#"
+CREATE OR REPLACE FUNCTION "version"() RETURNS TEXT
+STRICT
+LANGUAGE SQL
+AS $$
+    SELECT extversion FROM pg_extension WHERE extname = 'bfn';
+$$;
+"#, name = "version"
+);
+
+
 /// Returns the version number of the library.
 /// # Returns
 /// A static string representing the library version.

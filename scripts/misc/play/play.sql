@@ -22,6 +22,8 @@ where
 -- install bfn in schema bfn
 create extension bfn schema bfn;
 
+drop extension if exists bfn;
+
 -- Check bfn version
 select bfn.bfn_version();
 

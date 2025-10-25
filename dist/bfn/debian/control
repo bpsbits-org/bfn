@@ -1,0 +1,13 @@
+Source: bfn
+Section: database
+Priority: optional
+Maintainer: BPS
+Build-Depends:  debhelper (>= 13~),
+                debhelper-compat (= 13)
+Standards-Version: 4.7.0
+
+Package: bfn
+Architecture: amd64
+Depends: ${misc:Depends}
+Description: BFN PostgreSQL Extension
+ Misc tools for PostgreSQL
